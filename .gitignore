@@ -1,0 +1,6 @@
+node_modules/
+out/
+.DS_Store
+# Amazon Ember: used, never committed or published (make fonts)
+public/fonts/amazon-ember/*
+!public/fonts/amazon-ember/README.md

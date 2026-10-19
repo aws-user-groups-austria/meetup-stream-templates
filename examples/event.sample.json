@@ -1,0 +1,143 @@
+{
+  "version": 1,
+  "id": "2026-10-20-aws-meetup-vienna-53",
+  "source": {
+    "meetupUrl": "https://www.meetup.com/amazon-web-services-aws-vienna/events/316893745/",
+    "fetchedAt": "2026-10-16T12:00:00.000Z"
+  },
+  "title": "AWS Meetup Vienna #53 - hosted by RBI",
+  "tagline": "In this October edition, we'll explore what AI-assisted cloud operations looks like in practice.",
+  "group": {
+    "id": "aws-ug-vienna",
+    "name": "AWS User Group Vienna",
+    "url": "https://www.meetup.com/amazon-web-services-aws-vienna/"
+  },
+  "timezone": "Europe/Vienna",
+  "doorsOpen": "2026-10-20T17:00:00+02:00",
+  "end": "2026-10-20T22:00:00+02:00",
+  "venue": {
+    "name": "Raiffeisen Bank International",
+    "address": "Mooslackengasse 12, 1190 Wien, Austria"
+  },
+  "sponsors": [
+    {
+      "name": "Raiffeisen Bank International AG",
+      "short": "RBI"
+    }
+  ],
+  "segments": [
+    {
+      "id": "doors",
+      "kind": "networking",
+      "start": "2026-10-20T17:00:00+02:00",
+      "end": "2026-10-20T18:00:00+02:00",
+      "title": "Entry & Networking"
+    },
+    {
+      "id": "welcome",
+      "kind": "welcome",
+      "start": "2026-10-20T18:00:00+02:00",
+      "end": "2026-10-20T18:05:00+02:00",
+      "title": "Welcome and Introduction AWS Community Vienna"
+    },
+    {
+      "id": "sponsor",
+      "kind": "sponsor",
+      "start": "2026-10-20T18:05:00+02:00",
+      "end": "2026-10-20T18:10:00+02:00",
+      "title": "Welcome and Introduction to the sponsors (Raiffeisen Bank International)",
+      "sponsor": {
+        "name": "Raiffeisen Bank International AG",
+        "short": "RBI"
+      }
+    },
+    {
+      "id": "talk-1",
+      "kind": "talk",
+      "start": "2026-10-20T18:10:00+02:00",
+      "end": "2026-10-20T18:50:00+02:00",
+      "title": "Teaching an AI to Debug Our Cloud: AWS DevOps Agent in Practice",
+      "talk": {
+        "title": "Teaching an AI to Debug Our Cloud: AWS DevOps Agent in Practice",
+        "abstract": "AWS DevOps Agent is AWS's AI-powered teammate for operations: it investigates incidents, correlates logs, metrics, traces and deployments, proposes mitigations, and learns your environment over time through custom skills and memory.",
+        "speakers": [
+          {
+            "name": "Roman Jokel",
+            "role": "Cloud Architect",
+            "company": "Raiffeisen Bank International"
+          },
+          {
+            "name": "Mladen Trampic",
+            "role": "Senior Technical Account Manager",
+            "company": "AWS"
+          }
+        ]
+      }
+    },
+    {
+      "id": "break-1",
+      "kind": "break",
+      "start": "2026-10-20T18:50:00+02:00",
+      "end": "2026-10-20T19:20:00+02:00",
+      "title": "Networking break"
+    },
+    {
+      "id": "talk-2",
+      "kind": "talk",
+      "start": "2026-10-20T19:20:00+02:00",
+      "end": "2026-10-20T20:00:00+02:00",
+      "title": "I don't trust my agents!",
+      "talk": {
+        "title": "I don't trust my agents!",
+        "abstract": "Your AI agent works great in the demo. Then you deploy it and it hallucinates a refund policy, exposes customer data, or just loops endlessly burning tokens. This session walks through a layered approach to agent safety using Amazon Bedrock AgentCore and the Strands Agents SDK.",
+        "speakers": [
+          {
+            "name": "Darko Mesaroš",
+            "role": "Principal Technologist",
+            "company": "AWS"
+          }
+        ]
+      }
+    },
+    {
+      "id": "closing",
+      "kind": "closing",
+      "start": "2026-10-20T20:00:00+02:00",
+      "end": "2026-10-20T22:00:00+02:00",
+      "title": "Networking"
+    }
+  ],
+  "links": {
+    "meetup": "https://www.meetup.com/amazon-web-services-aws-vienna/events/316893745/",
+    "feedback": "https://www.meetup.com/amazon-web-services-aws-vienna/events/316893745/",
+    "nextEvents": "https://awscommunity.at/"
+  },
+  "notices": [
+    "By submitting your RSVP, you acknowledge that photos and videos may be taken during the event. If you prefer not to appear in such recordings, please let the organizer know before the event."
+  ],
+  "upcoming": [
+    {
+      "name": "AWS Community Day Adria",
+      "date": "2026-10-22",
+      "location": "Ljubljana, Slovenia",
+      "url": "https://awscommunityadria.com/",
+      "speakers": [
+        {
+          "name": "Linda Mohamed"
+        },
+        {
+          "name": "Dmytro Hlotenko"
+        },
+        {
+          "name": "Darko Mesaroš"
+        }
+      ]
+    },
+    {
+      "name": "AWS Community Day Switzerland",
+      "date": "2026-10-29",
+      "location": "Dietlikon (Zurich), Switzerland",
+      "url": "https://www.awsug.ch/"
+    }
+  ]
+}

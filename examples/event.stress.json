@@ -1,0 +1,182 @@
+{
+  "version": 1,
+  "id": "2026-01-01-layout-stress-test",
+  "source": {
+    "meetupUrl": "https://www.meetup.com/example/events/1/",
+    "fetchedAt": "2026-01-01T12:00:00.000Z"
+  },
+  "title": "Layout Stress Test Meetup With A Deliberately Very Long Event Name #999 - hosted by An Extremely Long Sponsor Name",
+  "group": {
+    "id": "layout-test",
+    "name": "Layout Test User Group",
+    "url": "https://www.meetup.com/example/"
+  },
+  "timezone": "Europe/Vienna",
+  "doorsOpen": "2026-01-01T17:00:00+01:00",
+  "end": "2026-01-01T23:30:00+01:00",
+  "venue": {
+    "name": "A Venue With A Rather Long Name For Testing Wrapping Behaviour",
+    "address": "Some Very Long Street Name 123/4/56, 1010 Wien, Austria"
+  },
+  "sponsors": [
+    {
+      "name": "Internationale Beispielgesellschaft fuer Layoutpruefung und Textumbruch GmbH"
+    },
+    {
+      "name": "Second Example Sponsor AG",
+      "short": "SES"
+    }
+  ],
+  "segments": [
+    {
+      "id": "doors",
+      "kind": "networking",
+      "start": "2026-01-01T17:00:00+01:00",
+      "end": "2026-01-01T18:00:00+01:00",
+      "title": "Entry & Networking"
+    },
+    {
+      "id": "welcome",
+      "kind": "welcome",
+      "start": "2026-01-01T18:00:00+01:00",
+      "end": "2026-01-01T18:05:00+01:00",
+      "title": "Welcome and Introduction of the Layout Test User Group and Everything Else"
+    },
+    {
+      "id": "sponsor",
+      "kind": "sponsor",
+      "start": "2026-01-01T18:05:00+01:00",
+      "end": "2026-01-01T18:10:00+01:00",
+      "title": "Welcome and Introduction to the sponsors (Internationale Beispielgesellschaft fuer Layoutpruefung und Textumbruch GmbH)",
+      "sponsor": {
+        "name": "Internationale Beispielgesellschaft fuer Layoutpruefung und Textumbruch GmbH"
+      }
+    },
+    {
+      "id": "talk-1",
+      "kind": "talk",
+      "start": "2026-01-01T18:10:00+01:00",
+      "end": "2026-01-01T18:50:00+01:00",
+      "title": "x",
+      "talk": {
+        "title": "Teaching an AI to Debug Our Cloud: AWS DevOps Agent in Practice, Plus Everything We Learned Along the Way",
+        "speakers": [
+          {
+            "name": "Alexandra Konstantinopoulou-Winterberg",
+            "role": "Principal Distinguished Solutions Architect",
+            "company": "Internationale Beispielgesellschaft"
+          },
+          {
+            "name": "Bo Li",
+            "role": "Senior Technical Account Manager",
+            "company": "AWS"
+          },
+          {
+            "name": "Maximilian Mustermann"
+          }
+        ]
+      }
+    },
+    {
+      "id": "break-1",
+      "kind": "break",
+      "start": "2026-01-01T18:50:00+01:00",
+      "end": "2026-01-01T19:20:00+01:00",
+      "title": "Networking break"
+    },
+    {
+      "id": "talk-2",
+      "kind": "talk",
+      "start": "2026-01-01T19:20:00+01:00",
+      "end": "2026-01-01T20:00:00+01:00",
+      "title": "x",
+      "talk": {
+        "title": "Teaching an AI to Debug Our Cloud: AWS DevOps Agent in Practice",
+        "speakers": [
+          {
+            "name": "Alexandra Konstantinopoulou-Winterberg",
+            "role": "Principal Distinguished Solutions Architect",
+            "company": "Internationale Beispielgesellschaft fuer Layoutpruefung"
+          },
+          {
+            "name": "Sam Example",
+            "role": "Senior Technical Account Manager",
+            "company": "AWS"
+          }
+        ]
+      }
+    },
+    {
+      "id": "break-2",
+      "kind": "break",
+      "start": "2026-01-01T20:00:00+01:00",
+      "end": "2026-01-01T20:15:00+01:00",
+      "title": "Pizza"
+    },
+    {
+      "id": "talk-3",
+      "kind": "talk",
+      "start": "2026-01-01T20:15:00+01:00",
+      "end": "2026-01-01T21:00:00+01:00",
+      "title": "x",
+      "talk": {
+        "title": "Short",
+        "speakers": []
+      }
+    },
+    {
+      "id": "closing",
+      "kind": "closing",
+      "start": "2026-01-01T21:00:00+01:00",
+      "end": "2026-01-01T23:30:00+01:00",
+      "title": "Networking"
+    }
+  ],
+  "links": {
+    "meetup": "https://www.meetup.com/example/events/1/",
+    "feedback": "https://forms.example.com/a/very/long/feedback/form/path/that/goes/on/and/on?with=query&params=1",
+    "codeOfConduct": "https://example.com/code-of-conduct"
+  },
+  "notices": [
+    "By submitting your RSVP, you acknowledge that photos and videos may be taken during the event. If you prefer not to appear in such recordings, please let the organizer know before the event.",
+    "Please bring a photo ID; the building's reception needs it to issue visitor badges, and doors close to walk-ins at 18:15."
+  ],
+  "upcoming": [
+    {
+      "name": "AWS Community Day Central and Eastern Europe Extended Edition",
+      "date": "2026-11-03",
+      "endDate": "2026-11-04",
+      "location": "Wiener Neustadt, Lower Austria, Austria",
+      "url": "https://example.org/community-day-cee-extended-edition-2026/agenda",
+      "speakers": [
+        {
+          "name": "Maximiliane Oberhuber-Leitgeb"
+        },
+        {
+          "name": "Konstantin Beispiel"
+        },
+        {
+          "name": "Erika Musterfrau"
+        },
+        {
+          "name": "Max Mustermann"
+        },
+        {
+          "name": "Jane Placeholder"
+        }
+      ]
+    },
+    {
+      "name": "AWS Community Day Switzerland and Liechtenstein",
+      "date": "2026-11-19",
+      "location": "Dietlikon (Zurich), Switzerland",
+      "url": "https://example.org/ch"
+    },
+    {
+      "name": "A past day that must not show",
+      "date": "2025-12-01",
+      "location": "Nowhere",
+      "url": "https://example.org/past"
+    }
+  ]
+}

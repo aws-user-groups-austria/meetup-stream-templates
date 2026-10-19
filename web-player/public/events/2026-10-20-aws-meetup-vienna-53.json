@@ -1,0 +1,292 @@
+{
+  "version": 1,
+  "id": "2026-10-20-aws-meetup-vienna-53",
+  "source": {
+    "meetupUrl": "https://www.meetup.com/amazon-web-services-aws-vienna/events/316893745/",
+    "fetchedAt": "2026-10-19T19:11:05.576Z"
+  },
+  "title": "AWS Meetup Vienna #53 - hosted by RBI",
+  "tagline": "Autumn is arriving in Vienna - and so is our next AWS meetup!",
+  "image": "https://secure.meetupstatic.com/photos/event/c/d/4/8/highres_536512552.jpeg",
+  "group": {
+    "id": "aws-ug-vienna",
+    "name": "AWS User Group Vienna",
+    "url": "https://www.meetup.com/amazon-web-services-aws-vienna/"
+  },
+  "timezone": "Europe/Vienna",
+  "doorsOpen": "2026-10-20T17:00:00+02:00",
+  "end": "2026-10-20T22:00:00+02:00",
+  "venue": {
+    "name": "Raiffeisen Bank International",
+    "address": "Mooslackengasse 12, 1190 Wien, Austria"
+  },
+  "sponsors": [
+    {
+      "name": "Raiffeisen Bank International AG",
+      "short": "RBI",
+      "logo": "events/2026-10-20-aws-meetup-vienna-53/assets/rbi.svg",
+      "url": "https://www.rbinternational.com/de/raiffeisen.html"
+    }
+  ],
+  "segments": [
+    {
+      "id": "doors",
+      "kind": "networking",
+      "start": "2026-10-20T17:00:00+02:00",
+      "end": "2026-10-20T18:00:00+02:00",
+      "title": "Entry & Networking"
+    },
+    {
+      "id": "welcome",
+      "kind": "welcome",
+      "start": "2026-10-20T18:00:00+02:00",
+      "end": "2026-10-20T18:05:00+02:00",
+      "title": "Welcome and Introduction AWS Community Vienna"
+    },
+    {
+      "id": "sponsor",
+      "kind": "sponsor",
+      "start": "2026-10-20T18:05:00+02:00",
+      "end": "2026-10-20T18:10:00+02:00",
+      "title": "Welcome and Introduction to the sponsors (Raiffeisen Bank International)",
+      "sponsor": {
+        "name": "Raiffeisen Bank International AG",
+        "short": "RBI",
+        "logo": "events/2026-10-20-aws-meetup-vienna-53/assets/rbi.svg"
+      }
+    },
+    {
+      "id": "talk-1",
+      "kind": "talk",
+      "start": "2026-10-20T18:10:00+02:00",
+      "end": "2026-10-20T18:50:00+02:00",
+      "title": "Teaching an AI to Debug Our Cloud: AWS DevOps Agent in Practice",
+      "talk": {
+        "title": "Teaching an AI to Debug Our Cloud: AWS DevOps Agent in Practice",
+        "abstract": "AWS DevOps Agent is AWS's AI-powered teammate for operations - it investigates incidents, correlates logs/metrics/traces/deployments, proposes mitigations, and learns your environment over time through custom skills and memory. In this talk, we'll walk through what it can actually do, how we rolled it out across our AWS organization, the custom skills we built to teach it our environment (networking, IAM, account provisioning, firewall logs, and more), and the real incidents it has helped us resolve. We'll close with the honest lessons learned - what worked, what surprised us, and what we'd do differently - so you can walk away with a realistic picture of what AI-assisted operations looks like in practice, not just in theory.",
+        "speakers": [
+          {
+            "name": "Roman Jokel",
+            "role": "Cloud Architect",
+            "company": "Raiffeisen Bank International",
+            "photo": "events/2026-10-20-aws-meetup-vienna-53/assets/roman-jokel.png",
+            "bio": "Roman Jokel is a Cloud Architect at Raiffeisen Bank International (RBI) in Vienna, where he works on the bank's AWS cloud foundation, including automating landing zone operations with AWS Step Functions in RBI's Cloud Center of Excellence. He has presented RBI's cloud work at AWS Summit Zurich 2024 and AWS Summit Hamburg 2025, holds the AWS Solutions Architect - Professional, Advanced Networking - Specialty and Security - Specialty certifications, and is a co-organizer of the AWS User Group Vienna.",
+            "links": [
+              {
+                "title": "LinkedIn",
+                "url": "https://www.linkedin.com/in/roman-jokel/"
+              }
+            ]
+          },
+          {
+            "name": "Mladen Trampic",
+            "role": "Senior Technical Account Manager",
+            "company": "AWS",
+            "photo": "events/2026-10-20-aws-meetup-vienna-53/assets/mladen-trampic.png",
+            "bio": "Mladen Trampic is a Senior Technical Account Manager for AWS Enterprise Support EMEA in Vienna, where he helps customers architect for reliability and cost efficiency. Before AWS he was a Data Lake Solution Architect at Raiffeisen Bank International. He has co-authored AWS blog posts on Session Manager logging guardrails in a multi-account environment and on how Flo Health optimized Amazon DynamoDB, and he writes about Kiro CLI, MCP and AI-assisted development on his blog.",
+            "links": [
+              {
+                "title": "LinkedIn",
+                "url": "https://www.linkedin.com/in/trampic/"
+              },
+              {
+                "title": "Blog",
+                "url": "https://mladen.trampic.info/"
+              },
+              {
+                "title": "GitHub",
+                "url": "https://github.com/mtrampic"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "break-1",
+      "kind": "break",
+      "start": "2026-10-20T18:50:00+02:00",
+      "end": "2026-10-20T19:20:00+02:00",
+      "title": "Networking break"
+    },
+    {
+      "id": "talk-2",
+      "kind": "talk",
+      "start": "2026-10-20T19:20:00+02:00",
+      "end": "2026-10-20T20:00:00+02:00",
+      "title": "I don't trust my agents!",
+      "talk": {
+        "title": "I don't trust my agents!",
+        "abstract": "Your AI agent works great in the demo. Then you deploy it and it hallucinates a refund policy, exposes customer data, or just loops endlessly burning tokens. This session walks through a layered approach to agent safety using tools like Amazon Bedrock AgentCore and the Strands Agents SDK: guardrails, observability, multi-agent safety patterns, and reference architectures you can adapt immediately.",
+        "speakers": [
+          {
+            "name": "Darko Mesaroš",
+            "role": "Principal Technologist",
+            "company": "AWS",
+            "photo": "events/2026-10-20-aws-meetup-vienna-53/assets/darko-mesaros.png",
+            "bio": "I am a computer person who writes Rust, breaks things on AWS, and collects computers older than most of my audience. By title I'm a Principal Developer Advocate, by practice I'm live-coding on Twitch or convincing a 1974 minicomputer to do something useful. I build CLI tools nobody asked for but everyone ends up using, blog about Rust and cloud development right here, and firmly believe the terminal is the best UI ever made. I'm happiest when a demo works on the first try, which almost never happens.\n\nI also care deeply about developer productivity and coding assistants. I spend an unreasonable amount of time teaching AI agents to be better coding companions, building MCP servers, and automating everything that stands still long enough. If there's a way to make developers faster and happier, I'm probably already tinkering with it.",
+            "links": [
+              {
+                "title": "LinkedIn",
+                "url": "https://www.linkedin.com/in/darko-mesaros/"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "closing",
+      "kind": "closing",
+      "start": "2026-10-20T20:00:00+02:00",
+      "end": "2026-10-20T22:00:00+02:00",
+      "title": "Networking"
+    }
+  ],
+  "links": {
+    "meetup": "https://www.meetup.com/amazon-web-services-aws-vienna/events/316893745/",
+    "feedback": "https://www.meetup.com/amazon-web-services-aws-vienna/events/316893745/",
+    "codeOfConduct": "http://aws-meetup-vie.s3-website.eu-central-1.amazonaws.com/AWS_Meetup_Vienna-Code_Of_Conduct.pdf",
+    "nextEvents": "https://awscommunity.at/"
+  },
+  "notices": [
+    "By submitting your RSVP, you acknowledge that photos and videos may be taken during the event. If you prefer not to appear in such recordings, please let the organizer know before the event. Please note that we cannot guarantee the retrospective removal, blurring, or editing of individual attendees in group photos or event footage. Any publication of identifiable individual portraits will be subject to separate consent where required."
+  ],
+  "upcoming": [
+    {
+      "name": "AWS Community Day Adria",
+      "date": "2026-10-22",
+      "location": "Ljubljana, Slovenia",
+      "url": "https://awscommunityadria.com/",
+      "speakers": [
+        {
+          "name": "Linda Mohamed",
+          "photo": "people/linda-mohamed.png"
+        },
+        {
+          "name": "Dmytro Hlotenko",
+          "photo": "people/dmytro-hlotenko.png"
+        },
+        {
+          "name": "Darko Mesaroš",
+          "photo": "people/darko-mesaros.png"
+        }
+      ],
+      "screenshot": "community/communityday-adria.jpg"
+    },
+    {
+      "name": "AWS Community Day Switzerland",
+      "date": "2026-10-29",
+      "location": "Dietlikon (Zurich), Switzerland",
+      "url": "https://www.awsug.ch/",
+      "screenshot": "community/communityday-switzerland.jpg"
+    }
+  ],
+  "community": {
+    "name": "AWS User Group Vienna",
+    "team": [
+      {
+        "name": "Linda Mohamed",
+        "role": "AWS Hero · AWS Community DACH",
+        "photo": "people/linda-mohamed.png",
+        "email": "linda@awscommunity.at"
+      },
+      {
+        "name": "Philipp Bergsmann",
+        "role": "Open source contributor · UG Vienna veteran",
+        "photo": "people/philipp-bergsmann.png",
+        "email": "philipp@awscommunity.at"
+      },
+      {
+        "name": "Dmytro Hlotenko",
+        "role": "Photographer · AWS Community Day rep",
+        "photo": "people/dmytro-hlotenko.png",
+        "email": "dima@awscommunity.at"
+      },
+      {
+        "name": "Roman Jokel",
+        "role": "Cloud architect · AWS Summit speaker",
+        "photo": "people/roman-jokel.png",
+        "email": "roman@awscommunity.at"
+      },
+      {
+        "name": "Jakob Heinisch",
+        "role": "Organizational lead · UG Linz contact",
+        "photo": "people/jakob-heinisch.png",
+        "email": "jakob@awscommunity.at"
+      },
+      {
+        "name": "Matthias",
+        "role": "Quiz master · AWS PubQuiz Austria",
+        "photo": "people/matthias.png"
+      }
+    ],
+    "groups": [
+      {
+        "name": "AWS User Group Vienna",
+        "logo": "logos/ug-vienna.png",
+        "url": "https://www.meetup.com/amazon-web-services-aws-vienna/"
+      },
+      {
+        "name": "AWS Women's User Group Vienna",
+        "logo": "logos/wug-vienna.png",
+        "url": "https://www.meetup.com/aws-womens-user-group-vienna/"
+      },
+      {
+        "name": "AWS User Group Linz",
+        "logo": "logos/ug-linz.png",
+        "url": "https://www.meetup.com/aws-user-group-linz/"
+      }
+    ],
+    "badges": [
+      {
+        "name": "Leader",
+        "image": "badges/leader.png",
+        "title": "Event Organizer",
+        "text": "Reach out for questions, suggestions, or if you feel unsafe."
+      },
+      {
+        "name": "Host",
+        "image": "badges/host.png",
+        "title": "Location & Food Sponsor",
+        "text": "Curious about what we do? Let's chat!"
+      },
+      {
+        "name": "Speaker",
+        "image": "badges/speaker.png",
+        "title": "Today's Speaker",
+        "text": "Curious about the topic? Let's discuss!"
+      },
+      {
+        "name": "First-Timer",
+        "image": "badges/first-timer.png",
+        "title": "New to the Meetup",
+        "text": "Introduce yourself, and let's connect!"
+      },
+      {
+        "name": "All-Timer",
+        "image": "badges/all-timer.png",
+        "title": "Regular Member",
+        "text": "Welcome back! Say hi to the new faces."
+      }
+    ],
+    "codeOfConduct": {
+      "title": "Growing Together",
+      "subtitle": "One Respectful Interaction at a Time",
+      "lines": [
+        "No matter your background or interests, you're part of the AWS family here.",
+        "\"But, it's just a joke!\": If you have to say it, it probably wasn't. Aim for laughs, not cringes.",
+        "If you encounter a red signal, our organizers are here to navigate."
+      ],
+      "url": "http://aws-meetup-vie.s3-website.eu-central-1.amazonaws.com/AWS_Meetup_Vienna-Code_Of_Conduct.pdf"
+    },
+    "photos": [
+      "community/meetup-photos.png"
+    ],
+    "links": {
+      "website": "https://awscommunity.at/",
+      "meetup": "https://www.meetup.com/amazon-web-services-aws-vienna/",
+      "linkedin": "https://www.linkedin.com/company/aws-user-group-vienna"
+    }
+  }
+}

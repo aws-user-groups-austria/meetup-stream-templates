@@ -1,0 +1,9 @@
+node_modules/
+dist/
+out/
+.DS_Store
+public/events/*/
+public/people/
+public/logos/
+public/badges/
+public/community/

@@ -1,0 +1,1 @@
+Written by `scripts/archive-index.mjs` (`make player-event`): the hosts' logos in their colours for a light background, copied from the website's `public/assets/sponsors/` (see its README for each file's source), for the light plates of the header's "Our meetups" and "Our hosts and sponsors". Do not edit by hand.
