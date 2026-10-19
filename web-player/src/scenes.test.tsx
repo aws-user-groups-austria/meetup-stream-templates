@@ -20,6 +20,15 @@ import { ArchiveProvider, archiveSchema, type Archive } from "../../src/archive"
 import { EmbedProvider } from "../../src/embed";
 
 const event: EventFile = eventSchema.parse(real);
+
+/** The real #53 data has one coming community day; tests of "several" add a made-up second one. */
+const withSecondDay = (e: EventFile): EventFile => ({
+  ...e,
+  upcoming: [
+    ...(e.upcoming ?? []),
+    { name: "AWS Community Day Example", date: "2026-11-12", location: "Example City", url: "https://example.org/", screenshot: "community/communityday-example.jpg" },
+  ],
+});
 const RBI_LOGO = "events/2026-10-20-aws-meetup-vienna-53/assets/rbi.svg";
 
 const render = (id: SceneId, props: SceneProps, frame = 90, goToSegment?: (id: string) => void): string => {
@@ -469,12 +478,14 @@ describe("the new tour screens", () => {
     // Darko speaks tonight too: his photo opens his dialog; the others have none on this page
     expect(links(adria)).toContainEqual([`${PAGE}#speaker-darko-mesaros`, "_top"]);
     expect(links(adria)).not.toContainEqual([`${PAGE}#speaker-linda-mohamed`, "_top"]);
-    const swiss = renderEmbed("CommunityDay", { event, index: 1 });
-    expect(text(swiss)).toContain("Also coming up");
-    expect(text(swiss)).toContain("AWS Community Day Switzerland");
-    expect(swiss).toContain('data-screenshot="community/communityday-switzerland.jpg"');
-    expect(swiss).toContain('data-qr="https://www.awsug.ch/"');
-    expect(renderEmbed("CommunityDay", { event, index: 2 })).not.toContain("data-upcoming");
+    const two = withSecondDay(event);
+    const second = renderEmbed("CommunityDay", { event: two, index: 1 });
+    expect(text(second)).toContain("Also coming up");
+    expect(text(second)).toContain("AWS Community Day Example");
+    expect(second).toContain('data-screenshot="community/communityday-example.jpg"');
+    expect(second).toContain('data-qr="https://example.org/"');
+    expect(renderEmbed("CommunityDay", { event: two, index: 2 })).not.toContain("data-upcoming");
+    expect(renderEmbed("CommunityDay", { event, index: 1 })).not.toContain("data-upcoming");
     // in a still: the same screen, no links
     expect(render("CommunityDay", { event, index: 0 })).not.toContain("<a ");
   });

@@ -468,17 +468,18 @@ await expect("late-6-reload-forgets", { delay: 0, scene: "Break" });
   if (h.phase === "open") {
     check("embed-1-live", h.source === "live" && h.pill === "Live now" && h.dots.length === 0, `${h.phase} ${h.source} "${h.pill}"`);
   } else {
-    const tourOk = h.source === "tour" && h.progress && h.dots.length >= 10 && h.dots.includes("Agenda") && h.dots.includes("Our meetups") && h.dots.includes("Our sponsors") && /^Next: .+ · \d+ s$/.test(h.pill);
+    // The calm tour: the screens that read at header size (no agenda, no welcome screens), no pill while it just runs.
+    const tourOk = h.source === "tour" && h.progress && h.dots.length >= 6 && !h.dots.includes("Agenda") && ["Event", "Our host", "Our meetups", "Our sponsors"].every((d) => h.dots.includes(d)) && h.pill === "";
     check("embed-1-tour", tourOk, `${h.phase} ${h.scene} ${h.dots.length} dots, "${h.pill}"`);
     const dot = await evaluate(`(() => { const r = document.querySelector('[data-dot="1"]').getBoundingClientRect(); return [r.x + r.width / 2, r.y + r.height / 2]; })()`);
     await click(dot[0], dot[1], 1500);
     const a = await header();
-    await shoot("embed-2-dot-agenda");
-    const rows = a.links.filter((l) => l.includes("#agenda-") && l.endsWith(" _top"));
-    check("embed-2-dot-agenda", a.scene === "Agenda" && a.source === "tour" && rows.length === 7 && a.pill.startsWith("Paused"), `${a.scene} ${a.source}, ${rows.length} agenda links, "${a.pill}"`);
+    await shoot("embed-2-dot-host");
+    const site = a.links.filter((l) => l.endsWith(" _blank"));
+    check("embed-2-dot-host", a.scene === "SponsorHandover" && a.source === "tour" && site.length >= 1 && a.pill === "", `${a.scene} ${a.source}, ${site.length} links to the host, "${a.pill}"`);
     await click(20, 280, 1200);
     const v = await header();
-    check("embed-3-stage-click-visit", v.source === "visit" && v.scene === "Welcome" && /back to the tour in \d+ s/i.test(v.pill), `${v.scene} ${v.source} "${v.pill}"`);
+    check("embed-3-stage-click-visit", v.source === "visit" && v.scene === "SpeakerHandover" && /back to the tour in \d+ s/i.test(v.pill), `${v.scene} ${v.source} "${v.pill}"`);
   }
   await viewport(1920, 1080);
 }

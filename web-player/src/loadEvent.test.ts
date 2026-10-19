@@ -51,7 +51,7 @@ describe("loading", () => {
     const down = (async () => {
       throw new TypeError("Failed to fetch");
     }) as unknown as typeof fetch;
-    const a = await loadEvent("x", PAGE, down);
+    const a = await loadEvent("x", PAGE, down, 0);
     const b = await loadEvent("x", PAGE, respond("{ not json"));
     expect(!a.ok && a.error.title).toBe("Could not reach the event file");
     expect(!b.ok && b.error.title).toBe("The event file is not valid JSON");
@@ -65,5 +65,28 @@ describe("loading", () => {
       expect(r.error.issues.some((i) => i.startsWith("timezone:"))).toBe(true);
       expect(r.error.issues.some((i) => i.startsWith("segments.0.start:"))).toBe(true);
     }
+  });
+
+  it("tries a few times when the network fails, so one dropped request on venue Wi-Fi is no error screen", async () => {
+    let calls = 0;
+    const flaky = (async () => {
+      calls++;
+      if (calls < 3) throw new TypeError("Failed to fetch");
+      return new Response(JSON.stringify(real), { headers: { "content-type": "application/json" } });
+    }) as unknown as typeof fetch;
+    const r = await loadEvent("2026-10-20-aws-meetup-vienna-53", PAGE, flaky, 0);
+    expect(r.ok).toBe(true);
+    expect(calls).toBe(3);
+  });
+
+  it("does not try again for a missing file", async () => {
+    let calls = 0;
+    const missing = (async () => {
+      calls++;
+      return new Response("", { status: 404 });
+    }) as unknown as typeof fetch;
+    const r = await loadEvent("nope", PAGE, missing, 0);
+    expect(!r.ok && r.error.title).toBe("Event not found");
+    expect(calls).toBe(1);
   });
 });

@@ -3,7 +3,7 @@
   "id": "2026-10-20-aws-meetup-vienna-53",
   "source": {
     "meetupUrl": "https://www.meetup.com/amazon-web-services-aws-vienna/events/316893745/",
-    "fetchedAt": "2026-10-19T19:11:05.576Z"
+    "fetchedAt": "2026-10-19T20:27:32.138Z"
   },
   "title": "AWS Meetup Vienna #53 - hosted by RBI",
   "tagline": "Autumn is arriving in Vienna - and so is our next AWS meetup!",
@@ -173,13 +173,6 @@
         }
       ],
       "screenshot": "community/communityday-adria.jpg"
-    },
-    {
-      "name": "AWS Community Day Switzerland",
-      "date": "2026-10-29",
-      "location": "Dietlikon (Zurich), Switzerland",
-      "url": "https://www.awsug.ch/",
-      "screenshot": "community/communityday-switzerland.jpg"
     }
   ],
   "community": {

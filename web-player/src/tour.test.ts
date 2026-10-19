@@ -22,7 +22,16 @@ import {
   type HeaderState,
 } from "./tour";
 
-const event: EventFile = eventSchema.parse(real);
+/** The real #53 data has one coming community day; tests of "several" add a made-up second one. */
+const withSecondDay = (e: EventFile): EventFile => ({
+  ...e,
+  upcoming: [
+    ...(e.upcoming ?? []),
+    { name: "AWS Community Day Example", date: "2026-11-12", location: "Example City", url: "https://example.org/", screenshot: "community/communityday-example.jpg" },
+  ],
+});
+
+const event: EventFile = withSecondDay(eventSchema.parse(real));
 const archive = archiveSchema.parse(archiveRaw);
 const at = (hhmm: string, day = "2026-10-20") => {
   const [h, m] = hhmm.split(":").map(Number);
@@ -59,7 +68,7 @@ describe("the meetup page's header: the tour", () => {
       "Talk 1",
       "Talk 2",
       "Community Day Adria",
-      "Community Day Switzerland",
+      "Community Day Example",
       "Our meetups",
       "Our sponsors",
     ]);

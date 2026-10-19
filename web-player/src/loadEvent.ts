@@ -49,23 +49,38 @@ export const parseEvent = (data: unknown, url: string): LoadResult => {
   };
 };
 
+/** A network error (venue Wi-Fi, a busy server) is tried again this many times, a second apart, before the error screen. */
+export const RETRIES = 3;
+const RETRY_MS = 1000;
+
 export const loadEvent = async (
   param: string | null,
   pageHref: string,
   fetchImpl: typeof fetch = fetch,
+  retryMs: number = RETRY_MS,
 ): Promise<LoadResult> => {
   const url = eventUrlFor(param, pageHref);
   if (!url) {
     return { ok: false, error: { title: "No event given", detail: USAGE, issues: [] } };
   }
-  let response: Response;
-  try {
-    // no-cache: a re-synced event.json shows up on reload.
-    response = await fetchImpl(url, { cache: "no-cache" });
-  } catch (err) {
+  let response: Response | undefined;
+  let lastError: unknown;
+  for (let attempt = 0; attempt <= RETRIES && !response; attempt++) {
+    if (attempt > 0) await new Promise((r) => setTimeout(r, retryMs));
+    try {
+      // no-cache: a re-synced event.json shows up on reload.
+      const r = await fetchImpl(url, { cache: "no-cache" });
+      // A server error is tried again too; a 404 or an HTML answer is final.
+      if (r.status >= 500 && attempt < RETRIES) continue;
+      response = r;
+    } catch (err) {
+      lastError = err;
+    }
+  }
+  if (!response) {
     return {
       ok: false,
-      error: { title: "Could not reach the event file", detail: `${String((err as Error)?.message ?? err)}. ${USAGE}`, issues: [], url },
+      error: { title: "Could not reach the event file", detail: `${String((lastError as Error)?.message ?? lastError)}. ${USAGE}`, issues: [], url },
     };
   }
   // A dev server or a single-page host answers a missing file with index.html and 200.
