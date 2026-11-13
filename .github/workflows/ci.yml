@@ -1,0 +1,105 @@
+# Runs the room screen's checks on every change: typecheck, unit tests, the
+# player build, and the built player in headless Chrome at simulated times of
+# the evening.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+# No token permissions by default; each job asks for what it needs.
+permissions: {}
+
+# A newer run for the same branch or pull request cancels the older one.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: Typecheck, tests, build, screen check
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    defaults:
+      run:
+        working-directory: meetup-stream-templates
+
+    steps:
+      # Both repos side by side, the way the Makefile expects them
+      # (EVENTS_REPO defaults to ../meetup-event-vienna).
+      - name: Check out this repo
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          path: meetup-stream-templates
+          persist-credentials: false
+
+      # The screen check loads speaker photos, logos and badges that live in
+      # the events repo and are not committed here.
+      - name: Check out the events repo (images for the screen check)
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: aws-user-groups-austria/meetup-event-vienna
+          path: meetup-event-vienna
+          persist-credentials: false
+
+      - name: Set up Node 24
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: |
+            meetup-stream-templates/package-lock.json
+            meetup-stream-templates/web-player/package-lock.json
+
+      - name: Install the scenes
+        run: npm ci
+
+      - name: Install the web player
+        run: npm ci
+        working-directory: meetup-stream-templates/web-player
+
+      - name: Typecheck the scenes
+        run: npm run typecheck
+
+      - name: Typecheck the web player
+        run: npm run typecheck
+        working-directory: meetup-stream-templates/web-player
+
+      - name: Unit tests, scenes
+        run: npm test
+
+      - name: Unit tests, web player
+        run: npm test
+        working-directory: meetup-stream-templates/web-player
+
+      # Copies the event's images into web-player/public/. It also rewrites
+      # the event file and archive.json from the events repo, so those two are
+      # put back: the check runs against the event data committed here.
+      - name: Copy the event images from the events repo
+        run: |
+          make player-event
+          git checkout -- web-player/public/events
+
+      - name: Build the web player
+        run: npm run build
+        working-directory: meetup-stream-templates/web-player
+
+      # Serves dist/ under /present/ and checks it in headless Chrome
+      # (preinstalled on the runner at /usr/bin/google-chrome, which the
+      # script looks for). --no-build reuses the build from the step above.
+      - name: Check the player at simulated times of the evening
+        run: node scripts/screenshots.mjs --no-build
+        working-directory: meetup-stream-templates/web-player
+
+      - name: Upload the screenshots if something failed
+        if: failure()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: player-check-screenshots
+          path: meetup-stream-templates/web-player/out/check/
+          if-no-files-found: ignore
+          retention-days: 7
