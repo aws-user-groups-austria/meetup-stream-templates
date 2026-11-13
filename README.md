@@ -150,6 +150,14 @@ Typecheck, unit tests (scenes and player) and the player build:
 make check
 ```
 
+Every push to `main` and every pull request runs the same in GitHub Actions
+(`.github/workflows/ci.yml`): typecheck and unit tests for the scenes and the
+web player, the player build, and the built player in headless Chrome at
+simulated times of the evening. The screen check takes its images from
+`meetup-event-vienna`, checked out next to this repo, and runs against the event
+file committed in `web-player/public/events/`. If a check fails, the screenshots
+are attached to the run as an artifact.
+
 ## Scenes
 
 | Composition | Shown during | Loop |
@@ -268,3 +276,12 @@ by the Agenda still, the pre-show panel and the Welcome's second half.
 - `out/` rendered stills (not committed): `stills/` the real event, `stills-sample/`, `stills-stress/`
 - `web-player/` the run-of-show app
 - `Makefile` install, studio, stills, stills-sample, stills-stress, player, player-build, player-check, player-event, test, typecheck, audit, check
+
+## Licence
+
+[CC BY-NC-SA 4.0](LICENSE): free for volunteer-run user groups and other
+non-commercial communities to use and adapt, with attribution and under the same
+licence. Not for commercial use without written permission.
+
+The licence covers the scenes and the player. Photos of people, company logos
+and the Amazon Ember font are not included: bring your own.

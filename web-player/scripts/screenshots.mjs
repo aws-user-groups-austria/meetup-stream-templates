@@ -469,7 +469,9 @@ await expect("late-6-reload-forgets", { delay: 0, scene: "Break" });
     check("embed-1-live", h.source === "live" && h.pill === "Live now" && h.dots.length === 0, `${h.phase} ${h.source} "${h.pill}"`);
   } else {
     // The calm tour: the screens that read at header size (no agenda, no welcome screens), no pill while it just runs.
-    const tourOk = h.source === "tour" && h.progress && h.dots.length >= 6 && !h.dots.includes("Agenda") && ["Event", "Our host", "Our meetups", "Our sponsors"].every((d) => h.dots.includes(d)) && h.pill === "";
+    // The tour's first stop is the event card before doors and "Thank you" after the end.
+    const home = h.phase === "after-end" ? "Thank you" : "Event";
+    const tourOk = h.source === "tour" && h.progress && h.dots.length >= 6 && !h.dots.includes("Agenda") && [home, "Our host", "Our meetups", "Our sponsors"].every((d) => h.dots.includes(d)) && h.pill === "";
     check("embed-1-tour", tourOk, `${h.phase} ${h.scene} ${h.dots.length} dots, "${h.pill}"`);
     const dot = await evaluate(`(() => { const r = document.querySelector('[data-dot="1"]').getBoundingClientRect(); return [r.x + r.width / 2, r.y + r.height / 2]; })()`);
     await click(dot[0], dot[1], 1500);

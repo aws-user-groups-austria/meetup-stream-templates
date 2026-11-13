@@ -2,6 +2,7 @@
   "name": "meetup-stream-web-player",
   "version": "0.1.0",
   "private": true,
+  "license": "CC-BY-NC-SA-4.0",
   "type": "module",
   "description": "The run of show: plays the meetup evening's scenes by the clock in @remotion/player.",
   "scripts": {
@@ -27,7 +28,7 @@
     "@types/react-dom": "^18.3.7",
     "@vitejs/plugin-react": "^5.2.0",
     "typescript": "^5.9.3",
-    "vite": "^6.4.4",
-    "vitest": "^5.0.5"
+    "vite": "^6.4.6",
+    "vitest": "^5.1.0"
   }
 }
