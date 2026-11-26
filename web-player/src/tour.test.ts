@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { trackPercent } from "../../src/components/BottomBar";
 import { archiveSchema } from "../../src/archive";
 import { eventSchema, type EventFile } from "../../src/event.schema";
 import real from "../public/events/2026-10-20-aws-meetup-vienna-53.json";
@@ -229,5 +230,27 @@ describe("a visitor clicking around", () => {
     const visit = visitSegment(event, tour, startState(), "talk-1")!;
     expect(jumpTo(tour, 1)).toEqual({ tour: { index: 1, elapsedMs: 0 }, visit: null });
     expect(visit).not.toBeNull();
+  });
+});
+
+describe("the bottom bar follows the screen, not only the clock", () => {
+  const seg = (id: string) => event.segments.find((s) => s.id === id)!;
+  const segW = 100 / event.segments.length;
+  const indexOfSeg = (id: string) => event.segments.findIndex((s) => s.id === id);
+
+  it("a tour stop about a talk marks that talk, hours before it", () => {
+    expect(trackPercent(event, "talk-1", dayBefore)).toBeCloseTo(indexOfSeg("talk-1") * segW + segW / 2, 5);
+  });
+
+  it("the clock inside the part on screen still gives the smooth position", () => {
+    const start = Date.parse(seg("talk-1").start);
+    const end = Date.parse(seg("talk-1").end);
+    const half = start + (end - start) / 2;
+    expect(trackPercent(event, "talk-1", half)).toBeCloseTo(indexOfSeg("talk-1") * segW + segW / 2, 5);
+    expect(trackPercent(event, "talk-1", start + 60_000)).toBeLessThan(indexOfSeg("talk-1") * segW + segW / 2);
+  });
+
+  it("a screen about no part leaves the position to the clock", () => {
+    expect(trackPercent(event, undefined, at("18:20"))).toBeGreaterThan(indexOfSeg("talk-1") * segW);
   });
 });

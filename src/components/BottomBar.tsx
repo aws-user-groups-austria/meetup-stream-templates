@@ -27,14 +27,22 @@ import { urlHref } from "../embed";
 import { Linked } from "./Linked";
 
 /**
- * Where the marker is, in percent of the track: the segment of `currentId`
- * (or, with a live clock, the segment `nowMs` falls in) plus how far into
- * it. Without a clock, the middle of the current part.
+ * Where the marker is, in percent of the track: the part the screen is about
+ * (`currentId`), and how far into it the clock is while the clock is inside
+ * it. The screen comes first, so the meetup page's header, which tours the
+ * evening's screens out of order, marks the part on screen rather than
+ * leaving the marker parked at the clock. Without either, the middle of the
+ * current part.
  */
 export const trackPercent = (event: EventFile, currentId: string | undefined, nowMs: number | null): number => {
   const segs = event.segments;
   if (segs.length === 0) return 0;
   const segW = 100 / segs.length;
+  const shown = segs.findIndex((s) => s.id === currentId);
+  // A screen about another part than the clock is in: mark that part.
+  if (shown >= 0 && (nowMs === null || nowMs < Date.parse(segs[shown]!.start) || nowMs >= Date.parse(segs[shown]!.end))) {
+    return shown * segW + 0.5 * segW;
+  }
   if (nowMs !== null) {
     if (nowMs < Date.parse(segs[0]!.start)) return 0;
     if (nowMs >= Date.parse(segs[segs.length - 1]!.end)) return 100;
@@ -113,8 +121,9 @@ export const BottomBar: React.FC<{ event: EventFile; currentId?: string; showNex
   const parts = chapters(event);
   const currentIndex = parts.findIndex((c) => c.id === currentId);
   const percent = trackPercent(event, currentId, nowMs);
-  // A still about no part in particular (the deck's agenda) has no position to mark.
-  const placed = currentIndex >= 0 || nowMs !== null;
+  // A still about no part in particular (the deck's agenda, the tour's own
+  // screens) has no position to mark; before the evening the clock is none either.
+  const placed = currentIndex >= 0 || (nowMs !== null && nowMs >= Date.parse(event.segments[0]?.start ?? event.doorsOpen));
   const segW = 100 / Math.max(1, parts.length);
   const passThrough: React.CSSProperties = goToSegment ? { pointerEvents: "none" } : {};
   return (
