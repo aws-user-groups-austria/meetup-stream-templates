@@ -91,9 +91,11 @@ const TitlePanel: React.FC<SceneProps> = ({ event, segmentId }) => {
   const title = shortTitle(event);
   const suffix = titleSuffix(event);
   const start = programmeStart(event);
+  // Both hooks on every render: && would call the second one only sometimes.
   const beforeDoors = useIsBefore(event.doorsOpen);
+  const beforeProgramme = useIsBefore(start?.start ?? event.doorsOpen);
   // Doors open, nothing started yet: people are arriving and the screen says so.
-  const doorsNow = !beforeDoors && useIsBefore(start?.start ?? event.doorsOpen);
+  const doorsNow = !beforeDoors && beforeProgramme;
   const line = beforeDoors ? rsvpLine(event) : doorsNow ? doorsLine(event) : null;
   return (
     <Panel>
