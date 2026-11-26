@@ -4,8 +4,13 @@
  *
  *   before doors   a tour of the evening's screens, one after the other, that
  *                  always comes back to the event's own card (the pre-show),
- *                  with a fixed "Starts in" countdown to doors open
- *   doors to end   the room screen itself: what the clock says is on now
+ *                  with a fixed "Doors open in" countdown
+ *   doors open     the same tour, with a "Talks start in" countdown to the
+ *                  first item of the programme: people are arriving, and the
+ *                  room screen's own pre-show loop is not in the header (embed
+ *                  mode holds the event card), so the header would otherwise
+ *                  stand still for the whole networking hour
+ *   the programme  the room screen itself: what the clock says is on now
  *   after the end  the tour again, from "Thank you for coming", no countdown
  *
  * The tour runs on its own clock (TourClock: which stop, how far into it),
@@ -24,6 +29,22 @@ import { buildSteps, phaseAt, type Phase, type Step } from "./runOfShow";
 
 /** One screen of the tour; `index` picks the item of a list scene (CommunityDay: which community day). */
 export type TourStop = { sceneId: SceneId; segment: Segment | undefined; dwellMs: number; label: string; index?: number };
+
+/** The phases the header tours in: the evening's own programme is the clock's, not the tour's. */
+export type TourPhase = Exclude<Phase, "open"> | "doors";
+
+/** The first item of the programme, the moment the room screen takes over from the pre-show. */
+const programmeStartMs = (event: EventFile): number | null => {
+  const first = event.segments.find((s) => s.kind !== "networking");
+  return first ? Date.parse(first.start) : null;
+};
+
+/** Doors are open and the programme has not started: the networking hour. */
+export const inDoors = (event: EventFile, nowMs: number): boolean => {
+  if (phaseAt(event, nowMs) !== "open") return false;
+  const start = programmeStartMs(event);
+  return start !== null && nowMs < start;
+};
 
 /** How long each screen of the tour stays up. */
 export const TOUR_DWELL_MS = 9_000;
@@ -84,7 +105,7 @@ const dayLabel = (name: string): string => name.replace(/^AWS\s+/, "");
  * with the archive), then back to the card. After it: "Thank you for coming"
  * first, the same rest. A screen without its data is left out.
  */
-export const buildTour = (event: EventFile, phase: Exclude<Phase, "open">, archive: Archive | null = null): TourStop[] => {
+export const buildTour = (event: EventFile, phase: TourPhase, archive: Archive | null = null): TourStop[] => {
   const seen = new Set<string>();
   const evening: TourStop[] = [];
   for (const s of buildSteps(event)) {
@@ -175,15 +196,23 @@ const liveStep = (steps: Step[], event: EventFile, nowMs: number): Step => {
 /** The tour for the phase at `nowMs`: during the evening there is none (the clock leads). */
 export const tourAt = (event: EventFile, nowMs: number, archive: Archive | null = null): TourStop[] => {
   const phase = phaseAt(event, nowMs);
-  return phase === "open" ? [] : buildTour(event, phase, archive);
+  if (phase !== "open") return buildTour(event, phase, archive);
+  return inDoors(event, nowMs) ? buildTour(event, "doors", archive) : [];
 };
 
 /** What the header shows at `nowMs`: a visit while it lasts, else the clock during the evening, else the tour. */
 export const headerView = (event: EventFile, nowMs: number, tour: TourStop[], state: HeaderState): HeaderView => {
   const phase = phaseAt(event, nowMs);
-  const countdown = phase === "before-doors" ? { label: "Starts in", targetMs: Date.parse(event.doorsOpen) } : undefined;
+  const doorsStart = inDoors(event, nowMs) ? programmeStartMs(event) : null;
+  const countdown =
+    phase === "before-doors"
+      ? { label: "Doors open in", targetMs: Date.parse(event.doorsOpen) }
+      : doorsStart !== null
+        ? { label: "Talks start in", targetMs: doorsStart }
+        : undefined;
   const base = { phase, ...(countdown ? { countdown } : {}) };
-  const live = phase === "open" || tour.length === 0;
+  // The clock leads only where there is no tour: during the networking hour the tour runs on.
+  const live = tour.length === 0;
   const visit = state.visit;
   if (visit) {
     return {
@@ -230,7 +259,7 @@ export const visitSegment = (event: EventFile, tour: TourStop[], state: HeaderSt
 
 /** A click on the stage: the next screen after the one on view (of the tour, or of the evening), as a visit. */
 export const visitNext = (event: EventFile, tour: TourStop[], view: HeaderView): Visit => {
-  if (view.phase === "open" || tour.length === 0) {
+  if (tour.length === 0) {
     const list = buildSteps(event).filter((s) => !s.manual);
     const i = list.findIndex((s) => s.sceneId === view.sceneId && s.segment?.id === view.segment?.id);
     const next = list[wrap(i + 1, list.length)]!;

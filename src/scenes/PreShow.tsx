@@ -50,6 +50,17 @@ export const preShowPanelFrames = (event: EventFile): number => Math.floor(PRESH
 export const PHOTO_NOTICE = "Photos and videos are taken tonight; tell an organizer if you prefer not to appear.";
 export const noticeLine = (notice: string): string => (/photo|video|record/i.test(notice) ? PHOTO_NOTICE : excerpt(notice, 1).text);
 
+/** Before doors: how to still come along. */
+export const rsvpLine = (event: EventFile): string =>
+  `Doors open at ${localTime(event.doorsOpen)}. Not registered yet? RSVP on Meetup, everyone is welcome.`;
+
+/** While doors are open and nothing has started: what to do, and what the evening opens with. */
+export const doorsLine = (event: EventFile): string => {
+  const start = programmeStart(event);
+  const opens = start ? `We start at ${localTime(start.start)} with ${start.title.toLowerCase().startsWith("welcome") ? "a short community intro" : start.title.toLowerCase()}` : "";
+  return `Doors are open. Grab a drink, say hello.${opens ? ` ${opens}, then our host, then the first talk.` : ""}`;
+};
+
 /** Where the countdown points: doors before they open, the programme after. */
 const useTarget = (event: EventFile, segmentId?: string) => {
   const doors = findSegment(event, segmentId, "networking");
@@ -79,6 +90,11 @@ const TitlePanel: React.FC<SceneProps> = ({ event, segmentId }) => {
   const target = useTarget(event, segmentId);
   const title = shortTitle(event);
   const suffix = titleSuffix(event);
+  const start = programmeStart(event);
+  const beforeDoors = useIsBefore(event.doorsOpen);
+  // Doors open, nothing started yet: people are arriving and the screen says so.
+  const doorsNow = !beforeDoors && useIsBefore(start?.start ?? event.doorsOpen);
+  const line = beforeDoors ? rsvpLine(event) : doorsNow ? doorsLine(event) : null;
   return (
     <Panel>
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: GROUP_GAP, width: CONTENT_W }}>
@@ -97,6 +113,11 @@ const TitlePanel: React.FC<SceneProps> = ({ event, segmentId }) => {
           </Enter>
         </div>
         </Linked>
+        {line ? (
+          <Enter delay={STAGGER * 4}>
+            <div style={{ ...type("body"), color: COLORS.secondary, maxWidth: CONTENT_MAX, textAlign: "center", ...clampLines(2) }}>{line}</div>
+          </Enter>
+        ) : null}
         <Enter delay={STAGGER * 5}>
           <div
             data-preshow-countdown=""
