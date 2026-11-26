@@ -25,7 +25,7 @@ import { LiveClockProvider } from "../../src/scenes";
 import { BAR, GRID, HEIGHT, RADIUS, TOUR_UI } from "../../src/theme";
 import { C, FONT } from "./chrome";
 import { Stage, useFit } from "./Stage";
-import { headerView, jumpTo, pillText, startState, tickHeader, tourAt, visitNext, visitSegment, type HeaderState, type HeaderView, type TourStop } from "./tour";
+import { headerView, inDoors, jumpTo, pillText, startState, tickHeader, tourAt, visitNext, visitSegment, type HeaderState, type HeaderView, type TourStop } from "./tour";
 
 const TICK_MS = 250;
 /** The links go to this origin's pages: the header is an iframe on the website itself. */
@@ -175,8 +175,11 @@ export const EmbedShow: React.FC<{ event: EventFile; archive: Archive | null }> 
   const [paused, setPaused] = useState(false);
   const beforeDoors = nowMs < Date.parse(event.doorsOpen);
   const afterEnd = nowMs >= Date.parse(event.end);
+  // The networking hour tours as well, so it is a boundary of its own: without it
+  // the tour built at 17:00 would still be up when the programme starts.
+  const doorsNow = inDoors(event, nowMs);
   // The tour changes only with the phase (and the archive arriving), not on every tick.
-  const tour = useMemo(() => tourAt(event, nowMs, archive), [event, archive, beforeDoors, afterEnd]);
+  const tour = useMemo(() => tourAt(event, nowMs, archive), [event, archive, beforeDoors, doorsNow, afterEnd]);
   const tourRef = useRef(tour);
   tourRef.current = tour;
   const pausedRef = useRef(paused);
@@ -193,8 +196,8 @@ export const EmbedShow: React.FC<{ event: EventFile; archive: Archive | null }> 
     }, TICK_MS);
     return () => window.clearInterval(id);
   }, []);
-  // A new phase (doors open, the evening ends) starts its tour from the top.
-  useEffect(() => setState(startState()), [beforeDoors, afterEnd]);
+  // A new phase (doors open, the programme starts, the evening ends) starts its tour from the top.
+  useEffect(() => setState(startState()), [beforeDoors, doorsNow, afterEnd]);
 
   const view = headerView(event, nowMs, tour, state);
   const viewRef = useRef(view);

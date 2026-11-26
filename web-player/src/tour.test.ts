@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { trackPercent } from "../../src/components/BottomBar";
 import { archiveSchema } from "../../src/archive";
 import { eventSchema, type EventFile } from "../../src/event.schema";
 import real from "../public/events/2026-10-20-aws-meetup-vienna-53.json";
@@ -89,6 +90,7 @@ describe("the meetup page's header: the tour", () => {
 
   it("has no tour during the evening: the clock leads", () => {
     expect(tourAt(event, at("18:20"), archive)).toEqual([]);
+    expect(tourAt(event, at("17:30"), archive)[0]!.sceneId).toBe("PreShow");
     expect(tourAt(event, dayBefore, archive)[0]!.sceneId).toBe("PreShow");
     expect(tourAt(event, at("23:00"), archive)[0]!.sceneId).toBe("AfterEnd");
   });
@@ -136,15 +138,22 @@ describe("the tour runs by itself", () => {
 describe("the header by the clock", () => {
   const tour = (now: number) => tourAt(event, now, archive);
 
-  it("the day before: the tour, with the fixed Starts in countdown to doors open", () => {
+  it("the day before: the tour, with the fixed Doors open in countdown", () => {
     const v = headerView(event, dayBefore, tour(dayBefore), startState());
     expect(v).toMatchObject({ phase: "before-doors", source: "tour", sceneId: "PreShow" });
-    expect(v.countdown).toEqual({ label: "Starts in", targetMs: Date.parse(event.doorsOpen) });
+    expect(v.countdown).toEqual({ label: "Doors open in", targetMs: Date.parse(event.doorsOpen) });
   });
 
-  it("during the evening: what the room screen shows, no fixed countdown, no tour", () => {
+  it("the networking hour: the tour runs on, counting down to the first item", () => {
+    const v = headerView(event, at("17:30"), tour(at("17:30")), startState());
+    expect(v).toMatchObject({ phase: "open", source: "tour", sceneId: "PreShow", stopIndex: 0 });
+    expect(v.countdown).toEqual({ label: "Talks start in", targetMs: Date.parse(event.segments.find((s) => s.kind !== "networking")!.start) });
+    expect(tour(at("17:30")).length).toBeGreaterThan(1);
+  });
+
+  it("during the programme: what the room screen shows, no fixed countdown, no tour", () => {
     const v = (t: number) => headerView(event, t, tour(t), startState());
-    expect(v(at("17:30"))).toMatchObject({ phase: "open", source: "live", sceneId: "PreShow", stopIndex: null, next: null });
+    expect(tour(at("18:20"))).toEqual([]);
     expect(v(at("18:20"))).toMatchObject({ source: "live", sceneId: "NowSpeaking", segment: { id: "talk-1" } });
     expect(v(at("18:55"))).toMatchObject({ source: "live", sceneId: "Break" });
     expect(v(at("18:20")).countdown).toBeUndefined();
@@ -221,5 +230,27 @@ describe("a visitor clicking around", () => {
     const visit = visitSegment(event, tour, startState(), "talk-1")!;
     expect(jumpTo(tour, 1)).toEqual({ tour: { index: 1, elapsedMs: 0 }, visit: null });
     expect(visit).not.toBeNull();
+  });
+});
+
+describe("the bottom bar follows the screen, not only the clock", () => {
+  const seg = (id: string) => event.segments.find((s) => s.id === id)!;
+  const segW = 100 / event.segments.length;
+  const indexOfSeg = (id: string) => event.segments.findIndex((s) => s.id === id);
+
+  it("a tour stop about a talk marks that talk, hours before it", () => {
+    expect(trackPercent(event, "talk-1", dayBefore)).toBeCloseTo(indexOfSeg("talk-1") * segW + segW / 2, 5);
+  });
+
+  it("the clock inside the part on screen still gives the smooth position", () => {
+    const start = Date.parse(seg("talk-1").start);
+    const end = Date.parse(seg("talk-1").end);
+    const half = start + (end - start) / 2;
+    expect(trackPercent(event, "talk-1", half)).toBeCloseTo(indexOfSeg("talk-1") * segW + segW / 2, 5);
+    expect(trackPercent(event, "talk-1", start + 60_000)).toBeLessThan(indexOfSeg("talk-1") * segW + segW / 2);
+  });
+
+  it("a screen about no part leaves the position to the clock", () => {
+    expect(trackPercent(event, undefined, at("18:20"))).toBeGreaterThan(indexOfSeg("talk-1") * segW);
   });
 });
